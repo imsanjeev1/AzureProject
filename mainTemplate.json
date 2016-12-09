@@ -1,0 +1,228 @@
+	{
+	  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	  "contentVersion": "1.0.0.0",
+	  "parameters": {
+		"artifactsBaseUrl": {
+		  "type": "string",
+		  "defaultValue": "",
+		  "metadata": {
+			"description": "Base URL of the solution template gallery package not including the trailing slash",
+			"artifactsBaseUrl": ""
+		  }
+		},
+		"location": {
+		  "type": "string",		  
+		  "metadata": {
+			"description": "Location were resources will be deployed"
+		  }
+		},
+		"vMName":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"customerName":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"companyName":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"webSiteName":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"emailID":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"contactNo":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"alternateNumber":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"address":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"country":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"other":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"state":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"city":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"zipCode":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		},
+		"remark":{
+		 "type":"string",
+		 "metadata":{
+			"description":""		 
+		 }		
+		}
+		
+		
+  },
+"variables": {
+		"apiVersions": {
+		  "resources": {
+			"deployments": "2016-09-01"
+		  },
+		"storage": {
+			"storageAccounts": "2016-05-01"
+		  },
+		"network": {
+			"virtualNetworks": "2016-03-30",
+			"networkInterfaces": "2016-03-30",
+			"loadBalancers": "2016-03-30",
+			"publicIPAddresses": "2016-03-30",
+			"networkSecurityGroups": "2016-03-30"
+		  },
+		"compute": {
+			"availabilitySets": "2016-03-30",
+			"virtualMachines": "2016-03-30",
+			"virtualMachineExtensions": "2016-03-30"
+		  }
+		},		
+		"baseUrl": "[concat(parameters('artifactsBaseUrl'),'/')]",
+		"logicAppName":"[concat('sendgridApp',uniqueString(resourceGroup().id))]",
+		"sendgridApiKey":"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",
+		"sendgridName":"MEmail",
+		"supportTicket":"Support Ticket - HMA",
+		"emailTo":"sdplusmsptest@hanusoftware.com",
+		"emailFrom":"ishwar.dutt@in.hanusoftware.com"		
+	  },
+	  "resources": [
+				{
+				  "type": "Microsoft.Web/connections",
+				  "apiVersion": "2016-06-01",
+				  "location": "[resourceGroup().location]",
+				  "name": "[variables('sendgridName')]",
+				  "properties": {
+					"api": {
+					  "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/sendgrid')]"
+					},
+					"displayName": "sendgrid",
+					"parameterValues": {
+					  "apiKey": "[variables('sendgridApiKey')]"
+					}
+				  }
+    },
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2016-06-01",
+      "name": "[variables('logicAppName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', variables('sendgridName'))]"
+      ],
+      "properties": {
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            },
+			"$message":{
+			  "type":"Object",
+			 "defaultValue": {}
+			}
+          },
+          "triggers": {
+            "recurrence": {
+              "type": "recurrence",             
+			  "recurrence": {  
+			  "frequency": "Year",  
+				"interval": "1"  
+				}			              
+            }
+          },		  
+          "actions": {
+            "Send_email": {
+              "type": "ApiConnection",
+              "inputs": {
+                "body": {
+                  "body": "@parameters('$message')['$emailBody']",
+                  "from": "[variables('emailFrom')]",
+                  "ishtml": true,
+                  "subject": "[variables('supportTicket')]",
+                  "to": "[variables('emailTo')]"
+                },
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['sendgrid']['connectionId']"
+                  }
+                },
+                "method": "POST",
+                "path": "/api/mail.send.json"
+              },
+              "runAfter": {}
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "sendgrid": {
+                "id": "[concat(subscription().id,'/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/sendgrid')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', variables('sendgridName'))]"
+              }
+            }
+          },
+		  "$message":{
+			"value":{
+			  "$emailBody":"[concat('<html xmlns=\"http://www.w3.org/1999/xhtml\"><head><title></title></head><body>','<br/>','<b>VirtualMachine : </b>',parameters('vMName'),'<br/>','<b>Customer : </b>',parameters('customerName'),'<br/>','<b>Company : <b/>',parameters('companyName'),'<br/>','<b>WebSite : </b>',parameters('webSiteName'),'<br/>','<b>EmailID : </b>',parameters('emailID'),'<br/>','<b>ContactNo : </b>',parameters('contactNo'),'<br/>','<b>AlternateNumber : </b>',parameters('alternateNumber'),'<br/>','<b>Address : </b>',parameters('address'),'<br/>','<b>Country : </b>',parameters('country'),'<br/>','<b>OtherCountry : </b>',parameters('other'),'<br/>','<b>State : </b>',parameters('state'),'<br/>','<b>City : </b>',parameters('city'),'<br/>','<b>ZipCode : </b>',parameters('zipCode'),'<br/>','<b>Remark : </b>',parameters('remark'),'</body></html>')]"
+			}		  
+		  }
+        }
+      }
+    }
+		
+	  ],
+	  "outputs": {
+		
+	  }
+	}

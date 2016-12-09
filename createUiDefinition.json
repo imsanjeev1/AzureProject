@@ -1,0 +1,383 @@
+{
+  "handler": "Microsoft.Compute.MultiVm",
+  "version": "0.0.1-preview",
+  "parameters": {
+    "basics": [
+      {
+        "name": "VMName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Virtual Machine Name",
+        "toolTip": "Enter Existing VM Name For Backup.",
+        "osPlatform": "Windows",
+        "constraints": {
+          "required": true,
+          "regex": "^([a-z0-9A-Z0-9-]+,)*[a-z0-9A-Z0-9-]+$",
+          "validationMessage": "VM name should be alpha-numeric.Multiple VM allow with Comma seperated only."
+        }
+      }
+
+    ],
+    "steps": [
+      {
+        "name": "Customer",
+        "label": "Customer",
+        "subLabel": {
+          "preValidation": "Details",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "Customer",
+        "elements": [
+          {
+            "name": "CustomerName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Customer Name",
+            "toolTip": "Please Enter Customer Full Name.",
+            "defaultValue": "",
+            "constraints": {
+              "required": true,
+              "regex": "^[0-9A-Za-z ]+$",
+              "validationMessage": "Customer should be alphanumeric and space allowed only."
+            }
+          },
+          {
+            "name": "CompanyName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Company Name",
+            "toolTip": "Please Enter Company Full Name.",
+            "defaultValue": "",
+            "constraints": {
+              "required": true,
+              "regex": "^[0-9A-Za-z ]+$",
+              "validationMessage": "Company should be alphanumeric and space allowed only ."
+            }
+          },
+          {
+            "name": "webSiteName",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Please Enter Website URL",
+            "toolTip": "Enter your website full URL that is accessible",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^http(s)?://([\\w-]+.)+[\\w-]+(/[\\w- ./?%&=])?$",
+              "validationMessage": "Enter Website In Proper Format"
+            }
+          },
+          {
+            "name": "EmailID",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Email Address",
+            "toolTip": "Enter Your Email Address.",
+            "defaultValue": "",
+            "constraints": {
+              "required": true,
+              "regex": "^([0-9a-zA-Z]([-\\.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$",
+              "validationMessage": "Enter Email In Proper Format."
+            }
+          },
+          {
+            "name": "ContactNo",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Contact Number",
+            "toolTip": "Please Enter Your Contact Number.",
+            "defaultValue": "",
+            "constraints": {
+              "required": true,
+              "regex": "^[0-9-]{1,9}[0-9]$",
+              "validationMessage": "Please enter only integer number between [0-9]."
+            }
+          },
+          {
+            "name": "AlternateNumber",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Alternate Number",
+            "toolTip": "Please Enter Your Alternate Contact Number.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[0-9-]{1,9}[0-9]$",
+              "validationMessage": "Please enter only integer number between [0-9]."
+            }
+          },
+          {
+            "name": "Address",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Address",
+            "toolTip": "Please Enter Your Full Address.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[0-9A-Za-z ]+$",
+              "validationMessage": "Alphanumeric and Space allowed only."
+            }
+          },
+          {
+            "name": "Country",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Country",
+            "toolTip": "Please Select your Country name.",
+            "defaultValue": "Amsterdam",
+            "constraints": {
+              "allowedValues": [
+                 {
+                  "label": "Other",
+                  "value": "Other"
+                },
+                {
+                  "label": "Amsterdam",
+                  "value": "Amsterdam"
+                },
+                {
+                  "label": "California",
+                  "value": "California"
+                },
+                {
+                  "label": "Chicago",
+                  "value": "Chicago"
+                },
+                {
+                  "label": "China",
+                  "value": "China"
+                },
+                {
+                  "label": "Hong Kong",
+                  "value": "Hong Kong"
+                },
+                {
+                  "label": "IL",
+                  "value": "IL"
+                },
+                 {
+                  "label": "India",
+                  "value": "India"
+                },
+                {
+                  "label": "Ireland",
+                  "value": "Ireland"
+                },
+                {
+                  "label": "Iowa",
+                  "value": "Iowa"
+                },
+                {
+                  "label": "Melbourne",
+                  "value": "Melbourne"
+                },
+                {
+                  "label": "Netherlands",
+                  "value": "Netherlands"
+                },
+                {
+                  "label": "Osaka",
+                  "value": "Osaka"
+                },
+                {
+                  "label": "Singapore",
+                  "value": "Singapore"
+                },
+                {
+                  "label": "Saitama",
+                  "value": "Saitama"
+                },
+                {
+                  "label": "San Antonio",
+                  "value": "San Antonio"
+                },
+                {
+                  "label": "São Paulo",
+                  "value": "São Paulo"
+                },
+                {
+                  "label": "Sydney",
+                  "value": "Sydney"
+                },
+                {
+                  "label": "TX",
+                  "value": "TX"
+                },
+                {
+                  "label": "Virginia",
+                  "value": "Virginia"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Other",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Other",
+            "toolTip": "Please Enter Your Country Name.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[0-9A-Za-z ]+$",
+              "validationMessage": "Alphanumeric and space allowed only."
+            },
+            "visible": "[equals('Other',steps('Customer').Country)]"
+          },
+          {
+            "name": "State",
+            "type": "Microsoft.Common.TextBox",
+            "label": "State",
+            "toolTip": "Please Enter Your State Name.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,              
+              "regex": "^[0-9A-Za-z ]+$",
+              "validationMessage": "Alphanumeric and space allowed only."
+            }
+          },
+          {
+            "name": "City",
+            "type": "Microsoft.Common.TextBox",
+            "label": "City",
+            "toolTip": "Please Enter Your City Name.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[0-9A-Za-z ]+$",
+              "validationMessage": "Alphanumeric and space allowed only."
+            }
+          },
+          {
+            "name": "Zipcode",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Zipcode",
+            "toolTip": "Please Enter Your Zipcode.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[0-9A-Za-z]+$",
+              "validationMessage": "Alphanumeric and space allowed only."
+            }
+          },
+          {
+            "name": "Remark",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Remarks",
+            "toolTip": "Please Enter Remarks.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[0-9A-Za-z ]+$",
+              "validationMessage": "Alphanumeric and space allowed only."
+            }
+          }
+        ]
+      },
+      {
+        "name": "HMAServices",
+        "label": "HMA",
+        "subLabel": {
+          "preValidation": "Services",
+          "postValidation": "Done"
+        },
+        "bladeTitle": "HMA Services",
+        "elements": [
+          {
+            "name": "Backup",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Backup",
+            "toolTip": "",
+
+            "defaultValue": "Yes",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": "Yes"
+                },
+                {
+                  "label": "No",
+                  "value": "No"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Vault",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Vault Name",
+            "toolTip": "Please Enter Vault Name.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[a-z][a-z0-9-]{1,61}[a-z0-9]$",
+              "validationMessage": "Only alphanumeric characters and hyphen are allowed, and the value must be less than 64 characters long."
+            }
+          },
+          {
+            "name": "Policy",
+            "type": "Microsoft.Common.TextBox",
+            "label": "Policy Name",
+            "toolTip": "Please Enter Policy Name.",
+            "defaultValue": "",
+            "constraints": {
+              "required": false,
+              "regex": "^[a-z][a-z0-9-]{1,61}[a-z0-9]$",
+              "validationMessage": "Only alphanumeric characters and hyphen are allowed, and the value must be less than 64 characters long."
+            }
+          },
+          {
+            "name": "patch",
+            "type": "Microsoft.Common.DropDown",
+            "label": "Window Patching",
+            "toolTip": "",
+            "defaultValue": "Yes",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": "Yes"
+                },
+                {
+                  "label": "No",
+                  "value": "No"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Monitoring",
+            "type": "Microsoft.Common.DropDown",
+            "label": "VM Monitoring",
+            "defaultValue": "Yes",
+            "constraints": {
+              "allowedValues": [
+                {
+                  "label": "Yes",
+                  "value": "Yes"
+                },
+                {
+                  "label": "No",
+                  "value": "No"
+                }
+              ]
+            }
+          }
+
+        ]
+      }
+
+
+
+    ],
+    "outputs": {
+      "vMName": "[basics('VMName')]",
+      "customerName": "[steps('Customer').CustomerName]",
+      "companyName": "[steps('Customer').CompanyName]",
+      "webSiteName": "[steps('Customer').webSiteName]",
+      "emailID": "[steps('Customer').EmailID]",
+      "contactNo": "[steps('Customer').ContactNo]",
+      "alternateNumber": "[steps('Customer').AlternateNumber]",
+      "address": "[steps('Customer').Address]",
+      "country": "[steps('Customer').Country]",
+      "other": "[steps('Customer').other]",
+      "state": "[steps('Customer').State]",
+      "city": "[steps('Customer').City]",
+      "zipCode": "[steps('Customer').Zipcode]",
+      "remark": "[steps('Customer').Remark]",
+      "location": "[location()]"
+    }
+  }
+}
